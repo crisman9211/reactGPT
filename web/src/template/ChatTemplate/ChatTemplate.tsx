@@ -9,12 +9,11 @@ interface Message {
   isGpt: boolean
 }
 
-const OrthographyPage = () => {
+const ChatTemplate = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
 
   const handlePost = async (text: string) => {
-
     setIsLoading(true)
     setMessages((prev) => [...prev, { text, isGpt: false }])
 
@@ -23,8 +22,6 @@ const OrthographyPage = () => {
     setIsLoading(false)
 
     //TODO: Add message isGpt in true
-
-
   }
 
   return (
@@ -34,41 +31,29 @@ const OrthographyPage = () => {
           {/* Bienvenida */}
           <GptMessage text="Hola, puedes escribir tu texto en español, y te ayudo con las correcciones" />
 
-          {
-            messages.map( (message, index) => (
-              message.isGpt
-                ? (
-                  <GptMessage key={ index } text="Esto es de OpenAI" />
-                )
-                : (
-                  <MyMessage key={ index } text={ message.text } />
-                )
-
-            ))
-          }
-
-
-          {
-            isLoading && (
-              <div className="col-start-1 col-end-12 fade-in">
-                <TypingLoader />
-              </div>
+          {messages.map((message, index) =>
+            message.isGpt ? (
+              <GptMessage key={index} text="Esto es de OpenAI" />
+            ) : (
+              <MyMessage key={index} text={message.text} />
             )
-          }
+          )}
 
-
+          {isLoading && (
+            <div className="fade-in col-start-1 col-end-12">
+              <TypingLoader />
+            </div>
+          )}
         </div>
       </div>
 
-
       <TextMessageBox
-        onSendMessage={ handlePost }
-        placeholder='Escribe aquí lo que deseas'
+        onSendMessage={handlePost}
+        placeholder="Escribe aquí lo que deseas"
         disableCorrections
       />
-
     </div>
-  );
-};
+  )
+}
 
-export default OrthographyPage
+export default ChatTemplate

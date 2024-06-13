@@ -2,13 +2,13 @@ import { useState } from 'react'
 
 interface TextMessageBoxProps {
   onSendMessage: (message: string) => void
-  placeHolder?: string
+  placeholder?: string
   disableCorrections?: boolean
 }
 
 const TextMessageBox = ({
   onSendMessage,
-  placeHolder,
+  placeholder,
   disableCorrections = false,
 }: TextMessageBoxProps) => {
   const [message, setMessage] = useState('')
@@ -36,7 +36,7 @@ const TextMessageBox = ({
             autoFocus={true}
             name="message"
             className="flex h-10 w-full rounded-xl border pl-4 text-gray-800 focus:border-indigo-300 focus:outline-none"
-            placeholder={placeHolder}
+            placeholder={placeholder}
             autoComplete={disableCorrections ? 'on' : 'off'}
             autoCorrect={disableCorrections ? 'on' : 'off'}
             spellCheck={disableCorrections ? true : false}
