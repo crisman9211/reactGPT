@@ -12,6 +12,7 @@ import { Router, Route } from '@redwoodjs/router'
 const Routes = () => {
   return (
     <Router>
+      <Route path="/" page={ReactGptPage} name="reactGpt" />
       <Route notfound page={NotFoundPage} />
     </Router>
   )
