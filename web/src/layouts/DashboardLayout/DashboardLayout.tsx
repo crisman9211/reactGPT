@@ -3,7 +3,10 @@ type DashboardLayoutProps = {
 }
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
-  return <>{children}</>
+  return <>
+  <h1>DashboardLayout</h1>
+  {children}
+  </>
 }
 
 export default DashboardLayout
