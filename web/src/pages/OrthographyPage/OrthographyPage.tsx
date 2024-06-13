@@ -1,21 +1,18 @@
-import { Link, routes } from '@redwoodjs/router'
-import { Metadata } from '@redwoodjs/web'
+import GptMessage from 'src/components/GptMessage/GptMessage'
+import MyMessage from 'src/components/MyMessage/MyMessage'
 
 const OrthographyPage = () => {
   return (
-    <>
-      <Metadata title="Orthography" description="Orthography page" />
+    <div className="chat-container">
+      <div className="chat-messages">
+        <div className="grid grid-cols-12 gap-y-2"></div>
 
-      <h1>OrthographyPage</h1>
-      <p>
-        Find me in{' '}
-        <code>./web/src/pages/OrthographyPage/OrthographyPage.tsx</code>
-      </p>
-      <p>
-        My default route is named <code>orthography</code>, link to me with `
-        <Link to={routes.orthography()}>Orthography</Link>`
-      </p>
-    </>
+        {/* bienveninda GPT */}
+        <GptMessage text='Hola, puedes escribir tu texto en español y te ayudo con las correcciones'/>
+        <MyMessage text='Hola, ¿cómo estás?'/>
+
+      </div>
+    </div>
   )
 }
 
