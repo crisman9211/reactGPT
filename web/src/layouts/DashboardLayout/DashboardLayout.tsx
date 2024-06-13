@@ -1,4 +1,4 @@
-import { NavLink, Link, routes } from '@redwoodjs/router'
+import SidebarMenuItem from 'src/components/SidebarMenuItem/SidebarMenuItem'
 import { menuRoutes } from 'src/router/router'
 
 type DashboardLayoutProps = {
@@ -18,23 +18,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 
         {/* Opciones del menú */}
         {menuRoutes.map((option) => (
-          <NavLink
-            key={option.to}
-            to={option.to}
-            className="flex items-center justify-center rounded-md p-2 transition-colors hover:bg-gray-800"
-            activeClassName="bg-gray-800"
-          >
-            {/* icon */}
-            <i className={`${option.icon} mr-4 text-2xl text-indigo-400`}></i>
-            <div className="flex flex-grow flex-col">
-              <span className="text-lg font-semibold text-white">
-                {option.title}
-              </span>
-              <span className="text-sm text-gray-400">
-                {option.description}
-              </span>
-            </div>
-          </NavLink>
+          <SidebarMenuItem key={option.to} {...option} />
         ))}
       </nav>
 
