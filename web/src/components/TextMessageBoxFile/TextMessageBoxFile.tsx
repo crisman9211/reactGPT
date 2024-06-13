@@ -1,17 +1,21 @@
-import { useState } from 'react'
+import React, { useRef, useState } from 'react'
 
-interface TextMessageBoxProps {
+interface TextMessageBoxFileProps {
   onSendMessage: (message: string) => void
   placeholder?: string
   disableCorrections?: boolean
+  accept?: string //image/*, video/*, audio/*, application/*
 }
 
-const TextMessageBox = ({
+const TextMessageBoxFile = ({
   onSendMessage,
   placeholder,
   disableCorrections = false,
-}: TextMessageBoxProps) => {
+  accept,
+}: TextMessageBoxFileProps) => {
   const [message, setMessage] = useState('')
+  const [selectedFile, setSelectedFile] = useState<File | null>()
+  const inputFileRef = useRef(null)
 
   const handleSendMessage = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -29,6 +33,27 @@ const TextMessageBox = ({
       onSubmit={handleSendMessage}
       className="flex h-16 w-full flex-row items-center rounded-xl bg-white px-4"
     >
+      <div className="mr-3">
+        <button
+          type="button"
+          className="flex h-10 w-10 items-center justify-center  text-gray-400 hover:bg-gray-200 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2 focus:ring-offset-white"
+          onClick={() => inputFileRef.current?.click()}
+        >
+          <i className="fa-solid fa-paperclip text-xl"></i>
+        </button>
+        <input
+          type="file"
+          className="hidden"
+          ref={inputFileRef}
+          accept={accept}
+          onChange={(event) => {
+            if (event.target.files && event.target.files.length > 0) {
+              setSelectedFile(event.target.files[0])
+            }
+          }}
+        />
+      </div>
+
       <div className="flex-grow">
         <div className="relative w-full">
           <input
@@ -46,8 +71,12 @@ const TextMessageBox = ({
         </div>
       </div>
       <div className="ml-4">
-        <button className="btn-primary">
-          <span className="mr-2">Enviar</span>
+        <button className="btn-primary" disabled={!selectedFile}>
+          {
+            (!selectedFile)
+            ? <span className="mr-2">Enviar</span>
+            : <span className="mr-2">{selectedFile.name.substring(0,15)+'...'}</span>
+          }
           <i className="fa-regular fa-paper-plane"></i>
         </button>
       </div>
@@ -55,4 +84,4 @@ const TextMessageBox = ({
   )
 }
 
-export default TextMessageBox
+export default TextMessageBoxFile
