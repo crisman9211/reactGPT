@@ -1,12 +1,20 @@
 import { useState } from 'react'
 import GptMessage from 'src/components/GptMessage/GptMessage'
+import GptOthographyMessaje from 'src/components/GptOthographyMessaje/GptOthographyMessaje'
 import MyMessage from 'src/components/MyMessage/MyMessage'
 import TextMessageBox from 'src/components/TextMessageBox/TextMessageBox'
 import TypingLoader from 'src/components/TypingLoader/TypingLoader'
+import { orthographyUseCase } from 'src/core/use-cases/orthography.use-case'
+import type { Error } from 'src/interfaces/orthography.response'
 
 interface Message {
   text: string
   isGpt: boolean
+  info?: {
+    userScore: number
+    errors: Error[]
+    message: string
+  }
 }
 
 const OrthographyPage = () => {
@@ -17,7 +25,27 @@ const OrthographyPage = () => {
     setIsLoading(true)
     setMessages((prev) => [...prev, { text, isGpt: false }])
 
-    //TODO: UseCase
+    const { ok, errors, message, userScore } = await orthographyUseCase(text)
+
+    if (!ok) {
+      setMessages((prev) => [
+        ...prev,
+        { text: 'No se pudo realizar la transacción', isGpt: true },
+      ])
+    } else {
+      setMessages((prev) => [
+        ...prev,
+        {
+          text: message,
+          isGpt: true,
+          info: {
+            userScore,
+            errors,
+            message,
+          },
+        },
+      ])
+    }
 
     setIsLoading(false)
 
@@ -33,7 +61,12 @@ const OrthographyPage = () => {
 
           {messages.map((message, index) =>
             message.isGpt ? (
-              <GptMessage key={index} text="Esto es de OpenAI" />
+              <GptOthographyMessaje
+                key={index}
+                errors={message.info?.errors}
+                messsage={message.info?.message}
+                userScore={message.info?.userScore}
+              />
             ) : (
               <MyMessage key={index} text={message.text} />
             )
